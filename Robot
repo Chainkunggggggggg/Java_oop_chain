@@ -1,0 +1,49 @@
+public class Robot {
+    private String name;
+    protected double x;
+    protected double y;
+    protected int orientation; // 0 = North, 90 = East, etc.
+
+    Robot(String name) {
+        this.name = name;
+        this.x = 0;
+        this.y = 0;
+        this.orientation = 0;
+    }
+
+    void moveForward(double units) {
+        switch (orientation) {
+            case 0:
+                y += units;
+                break;
+            case 90:
+                x += units;
+                break;
+            case 180:
+                y -= units;
+                break;
+            case 270:
+                x -= units;
+                break;
+            default:
+                System.out.println("Error: Invalid orientation");
+                break;
+        }
+    }
+
+    void rotate(int degrees) {
+        orientation = (orientation + degrees) % 360;
+        if (orientation < 0) orientation += 360;
+    }
+
+    String getLocation() {
+        String dir = switch (orientation) {
+            case 0 -> "North";
+            case 90 -> "East";
+            case 180 -> "South";
+            case 270 -> "West";
+            default -> "Unknown";
+        };
+        return name + " is at (" + x + "," + y + "), orientation is " + dir + ".";
+    }
+}

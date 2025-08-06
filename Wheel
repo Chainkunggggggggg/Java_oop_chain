@@ -1,0 +1,22 @@
+public class WheeledRobot extends Robot {
+    private int wheels;
+    private double wearPerMeter;
+    private double wearLevel;
+
+    WheeledRobot(String name, int wheels, double wearPerMeter) {
+        super(name);
+        this.wheels = wheels;
+        this.wearPerMeter = wearPerMeter;
+        this.wearLevel = 0;
+    }
+
+    @Override
+    void moveForward(double units) {
+        super.moveForward(units);
+        wearLevel += units * wearPerMeter;
+    }
+
+    double getWearLevel() {
+        return wearLevel;
+    }
+}

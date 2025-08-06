@@ -1,0 +1,89 @@
+public class Main {
+    public static void main(String[] args) {
+        WheeledRobot somsak = new WheeledRobot("somsak", 2, 0.2);
+        somsak.moveForward(1);
+        somsak.rotate(90);
+        somsak.moveForward(3);
+
+        Robot monkol = new Robot("monkol");
+        monkol.moveForward(4);
+        monkol.rotate(90);
+        monkol.moveForward(4);
+
+        WheeledRobot somsri = new WheeledRobot("somsri", 2, 0.1);
+        somsri.moveForward(2);
+        somsri.rotate(90);
+        somsri.moveForward(6);
+
+        System.out.println(somsak.getLocation());
+        System.out.printf("Wear level: %.2f\n\n", somsak.getWearLevel());
+
+        System.out.println(somsri.getLocation());
+        System.out.printf("Wear level: %.2f\n\n", somsri.getWearLevel());
+
+        System.out.println(monkol.getLocation());
+    }
+}
+
+class Robot {
+    private String name;
+    protected double x;
+    protected double y;
+    protected int orientation; // 0 = North, 90 = East, etc.
+
+    Robot(String name) {
+        this.name = name;
+        this.x = 0;
+        this.y = 0;
+        this.orientation = 0;
+    }
+
+    void moveForward(double units) {
+        switch (orientation) {
+            case 0 -> y += units;
+            case 90 -> x += units;
+            case 180 -> y -= units;
+            case 270 -> x -= units;
+            default -> System.out.println("Error: Invalid orientation");
+        }
+    }
+
+    void rotate(int degrees) {
+        orientation = (orientation + degrees) % 360;
+        if (orientation < 0) orientation += 360;
+    }
+
+    String getLocation() {
+        String dir = switch (orientation) {
+            case 0 -> "North";
+            case 90 -> "East";
+            case 180 -> "South";
+            case 270 -> "West";
+            default -> "Unknown";
+        };
+        return name + " is at (" + x + "," + y + "), orientation is " + dir + ".";
+    }
+}
+
+class WheeledRobot extends Robot {
+    private int wheels;
+    private double wearPerMeter;
+    private double wearLevel;
+
+    WheeledRobot(String name, int wheels, double wearPerMeter) {
+        super(name);
+        this.wheels = wheels;
+        this.wearPerMeter = wearPerMeter;
+        this.wearLevel = 0;
+    }
+
+    @Override
+    void moveForward(double units) {
+        super.moveForward(units);
+        wearLevel += units * wearPerMeter;
+    }
+
+    double getWearLevel() {
+        return wearLevel;
+    }
+}
